@@ -17,15 +17,22 @@ Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/login', [UserController::class, 'checkLogin'])->name('login.check');
 
 Route::middleware('auth')->group(function () {
-    Route::middleware('role:admin')->group(function () {
-        Route::get('/users', [UserController::class, 'index'])->name('user.index');
-    });
+    Route::get('/users', [UserController::class, 'index'])->name('user.index');
 
     Route::resource('user', UserController::class)->except(['create', 'store', 'index']);
 
     Route::middleware('role:customer,vendor,admin')->group(function () {
         Route::resource('category', CategoryController::class);
         Route::resource('product', ProductController::class);
+
+        Route::get('/vendor/products/view', function () {
+            $products = \App\Models\Product::with('category')
+                ->where('status', true)
+                ->where('stock', '>', 0)
+                ->get();
+
+            return view('customer.products', compact('products'));
+        })->name('vendor.products.view');
 
         Route::get('/customer/profile', function () {
             $user = Auth::user();

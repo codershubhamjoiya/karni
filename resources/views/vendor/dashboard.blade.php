@@ -4,7 +4,7 @@
 
 <p>Welcome to your vendor panel.</p>
 
-<a href="{{ route('vendor.products.create') }}">Add Product</a>
-
-<a href="{{ route('vendor.profile') }}">Manage Profile</a>
+<p><a href="{{ route('vendor.products.create') }}">Add Product</a></p>
+<p><a href="{{ route('vendor.profile') }}">Manage Profile</a></p>
+<p><a href="{{ route('vendor.profile') }}">Edit Profile</a></p>
 
