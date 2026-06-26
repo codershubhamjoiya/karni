@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\category;
+use Illuminate\Support\Str;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -12,7 +14,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::with('category')->get();
+
+        return view('product.index', compact('products'));
     }
 
     /**
@@ -20,17 +24,39 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
+        $categories = category::all();
 
-        return view('product.create',compact('categories'));
+        return view('product.create', compact('categories'));
     }
-
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+   public function store(Request $request)
     {
-        //
+        $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'name' => 'required|unique:products,name',
+            'description' => 'required',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
+        $imgName = time().'.'.$request->image->extension();
+        $request->image->move(public_path('product'), $imgName);
+
+        Product::create([
+            'category_id' => $request->category_id,
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'image' => $imgName,
+            'status' => true,
+        ]);
+
+        return redirect()->route('product.create')->with('success', 'Product added successfully');
     }
 
     /**

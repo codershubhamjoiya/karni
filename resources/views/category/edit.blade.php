@@ -1,4 +1,4 @@
-<form action="{{route('category.update',$category->id)}}">
+<form action="{{route('category.update',$category->id)}}" method="POST">
     @csrf
     @method('PUT')
 
