@@ -8,6 +8,7 @@ class Product extends Model
 {
     protected $fillable =[
         'category_id',
+        'vendor_id',
         'name',
         'slug',
         'description',
@@ -20,5 +21,10 @@ class Product extends Model
 
     public function category(){
         return $this->belongsTo(Category::class);
+    }
+
+    public function vendor()
+    {
+        return $this->belongsTo(User::class,'vendor_id');
     }
 }

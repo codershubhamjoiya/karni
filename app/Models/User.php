@@ -28,4 +28,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
         ];
     }
+
+    public function vendorProfile()
+    {
+        return $this->hasOne(vendorProfile::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class,'vendor_id');
+    }
 }

@@ -34,7 +34,7 @@ class ProductController extends Controller
    public function store(Request $request)
     {
         $request->validate([
-          'category_id' => 'required|exists:categories,id,status,1',
+          'category_id' => 'required|exists:categories,id',
             'name' => 'required|unique:products,name',
             'description' => 'required',
             'price' => 'required|numeric|min:0',
@@ -47,6 +47,7 @@ class ProductController extends Controller
 
         Product::create([
             'category_id' => $request->category_id,
+            'vendor_id' => auth()->id(),
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'description' => $request->description,
@@ -56,7 +57,7 @@ class ProductController extends Controller
             'status' => true,
         ]);
 
-        return redirect()->route('product.create')->with('success', 'Product added successfully');
+        return redirect()->route('vendor.products.create')->with('success', 'Product added successfully');
     }
 
     /**

@@ -6,26 +6,28 @@
 </a>
 
 <table border="1">
-    <tr>
+   <tr>
         <th>ID</th>
         <th>Category</th>
+        <th>Vendor</th>
         <th>Name</th>
         <th>Price</th>
         <th>Stock</th>
         <th>Image</th>
-    </tr>
+</tr>
 
-    @foreach($products as $product)
-    <tr>
+@foreach($products as $product)
+<tr>
         <td>{{ $product->id }}</td>
         <td>{{ $product->category->name }}</td>
+        <td>{{ $product->vendor->name ?? 'Unknown Vendor' }}</td>
         <td>{{ $product->name }}</td>
         <td>{{ $product->price }}</td>
         <td>{{ $product->stock }}</td>
         <td>
-           <img src="{{ asset('uploads/products/'.$product->image) }}" width="80">
+            <img src="{{ asset('uploads/products/'.$product->image) }}" width="80">
         </td>
-    </tr>
-    @endforeach
+</tr>
+@endforeach
 
 </table>

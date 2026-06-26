@@ -39,6 +39,7 @@
         "concurrently": "^9.0.1",
         "globals": "^15.14.0",
         "laravel-vite-plugin": "^3.1",
+        "pdf-parse": "^2.4.5",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
         "tailwind-merge": "^3.0.1",
@@ -50,5 +51,23 @@
         "@rollup/rollup-linux-x64-gnu": "4.9.5",
         "@tailwindcss/oxide-linux-x64-gnu": "^4.0.1",
         "lightningcss-linux-x64-gnu": "^1.29.1"
-    }
+    },
+    "name": "karni",
+    "version": "1.0.0",
+    "description": "",
+    "main": "eslint.config.js",
+    "directories": {
+        "test": "tests"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/codershubhamjoiya/karni.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/codershubhamjoiya/karni/issues"
+    },
+    "homepage": "https://github.com/codershubhamjoiya/karni#readme"
 }
