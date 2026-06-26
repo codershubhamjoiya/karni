@@ -1,4 +1,4 @@
-<p>Store URL: {{ route('product.store') }}</p>
+@include('layouts.header')
 <h1>All Products</h1>
 
 <a href="{{ route('product.create') }}">
@@ -23,7 +23,7 @@
         <td>{{ $product->price }}</td>
         <td>{{ $product->stock }}</td>
         <td>
-            <img src="{{ asset('product/'.$product->image) }}" width="80">
+           <img src="{{ asset('uploads/products/'.$product->image) }}" width="80">
         </td>
     </tr>
     @endforeach

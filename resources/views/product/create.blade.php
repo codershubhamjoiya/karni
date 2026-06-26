@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Add Product</title>
-</head>
-<body>
-
+    <head>
+        <title>Add Product</title>
+    </head>
+    <body>
+    @include('layouts.header')
     <h2>Add Product</h2>
 
     @if(session('success'))

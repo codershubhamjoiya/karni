@@ -1,3 +1,4 @@
+@include('layouts.header')
 <h2>All Categories</h2>
 
 <a href="{{ route('category.create') }}">
@@ -31,7 +32,7 @@
                 @csrf
                 @method('DELETE')
 
-                <button type="submit">
+                <button type="submit" onclick="return confirm('Are you sure you want to delete this category?')">
                     Delete
                 </button>
             </form>

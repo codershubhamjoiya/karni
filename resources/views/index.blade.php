@@ -1,21 +1,23 @@
+@include('layouts.header')
 <table border="dark">
     <thead>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Role</th>
-        <th>Password</th>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Role</th>
+        </tr>
     </thead>
-    @foreach($data as $user)
     <tbody>
-        <td>{{ $user->id }}</td>
-        <td>{{$user->name}}</td>
-        <td>{{$user->email}}</td>
-        <td>{{$user->phone}}</td>
-        <td>{{$user->role}}</td>
-        <td>{{$user->password}}</td>
-        
+        @foreach($data as $user)
+            <tr>
+                <td>{{ $user->id }}</td>
+                <td>{{$user->name}}</td>
+                <td>{{$user->email}}</td>
+                <td>{{$user->phone}}</td>
+                <td>{{$user->role}}</td>
+            </tr>
+        @endforeach
     </tbody>
-    @endforeach
 </table>

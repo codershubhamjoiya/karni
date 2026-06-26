@@ -24,7 +24,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = category::all();
+        $categories = category::where('status', true)->get();
 
         return view('product.create', compact('categories'));
     }
@@ -34,7 +34,7 @@ class ProductController extends Controller
    public function store(Request $request)
     {
         $request->validate([
-            'category_id' => 'required|exists:categories,id',
+          'category_id' => 'required|exists:categories,id,status,1',
             'name' => 'required|unique:products,name',
             'description' => 'required',
             'price' => 'required|numeric|min:0',
@@ -43,7 +43,7 @@ class ProductController extends Controller
         ]);
 
         $imgName = time().'.'.$request->image->extension();
-        $request->image->move(public_path('product'), $imgName);
+       $request->image->move(public_path('uploads/products'), $imgName);
 
         Product::create([
             'category_id' => $request->category_id,

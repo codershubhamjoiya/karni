@@ -30,38 +30,33 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+   public function store(Request $request)
     {
-        // dd($request->all());
-
-
         $request->validate([
-            'name'=> 'required',
-            'email'=> 'required|email|unique:users,email',
-            'confirm_email'=>'same:email',
-            'phone'=>'required|numeric|digits:10|unique:users,phone',
-            'confirm_phone'=>'same:phone',
-            'password'=>'required|min:6',
-            'confirm_password' => 'same:password'
-            
-        ],[
-            'email.unique'=>"This email is already Ragistered",
-            'phone.unique'=>"This number is already Ragistered"
-        ]
-        );
-       
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'confirm_email' => 'required|same:email',
+            'phone' => 'required|numeric|digits:10|unique:users,phone',
+            'confirm_phone' => 'required|same:phone',
+            'password' => 'required|min:6',
+            'confirm_password' => 'required|same:password',
+            'role' => 'required|in:customer,seller',
+        ], [
+            'email.unique' => "This email is already registered",
+            'phone.unique' => "This number is already registered",
+        ]);
+
         User::create([
-            'id' => $request->id,
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'password' => Hash::make($request->password)
-            ]);
+            'role' => $request->role,
+            'password' => Hash::make($request->password),
+        ]);
 
-            return redirect()->route('user.index');
-
+        return redirect()->route('login');
     }
-        
+            
 
     /**
      * Display the specified resource.
@@ -116,5 +111,15 @@ class UserController extends Controller
             ]);
         }
 
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
     }
 }

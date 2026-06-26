@@ -12,10 +12,8 @@ class CategoryController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $categories = Category::all();
-       
-
+    { 
+        $categories = category::where('status', true)->get();
         return view('category.index',compact('categories'));
     }
 
@@ -84,7 +82,7 @@ class CategoryController extends Controller
      */
     public function destroy(category $category)
     {
-        $category->delete();
-        return redirect->route('category.index');
+        $category->update(['status' => false]);
+        return redirect()->route('category.index')->with('success', 'Category deleted successfully');
     }
 }
