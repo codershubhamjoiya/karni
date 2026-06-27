@@ -1,14 +1,20 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\category;
-use Illuminate\Support\Str;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -16,7 +22,7 @@ class ProductController extends Controller
     {
         $products = Product::with('category')->get();
 
-        return view('product.index', compact('products'));
+        return Inertia::render('Product/Index', compact('products'));
     }
 
     /**
@@ -24,10 +30,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = category::where('status', true)->get();
+        $categories = Category::where('status', true)->get();
 
-        return view('product.create', compact('categories'));
+        return Inertia::render('Product/Create', compact('categories'));
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -42,8 +49,8 @@ class ProductController extends Controller
             'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        $imgName = time().'.'.$request->image->extension();
-       $request->image->move(public_path('uploads/products'), $imgName);
+        $imgName = time() . '_' . Str::random(5) . '.' . $request->image->extension();
+        $request->image->move(public_path('uploads/products'), $imgName);
 
         Product::create([
             'category_id' => $request->category_id,
