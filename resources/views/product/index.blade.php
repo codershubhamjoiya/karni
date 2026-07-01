@@ -29,6 +29,9 @@
         <td>
             <img src="{{ asset('uploads/products/'.$product->image) }}" width="80">
         </td>
+        @if(auth()->check() && auth()->user()->role === 'vendor' && auth()->id() === $product->vendor_id)
+            <td><a href="{{ route('vendor.products.edit', $product) }}">Edit</a></td>
+        @endif
 </tr>
 @endforeach
 

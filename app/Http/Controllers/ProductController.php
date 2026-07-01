@@ -82,7 +82,13 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        if (auth()->id() !== $product->vendor_id || auth()->user()->role !== 'vendor') {
+            abort(403);
+        }
+
+        $categories = Category::where('status', true)->get();
+
+        return view('product.edit', compact('product', 'categories'));
     }
 
     /**
@@ -90,7 +96,36 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        if (auth()->id() !== $product->vendor_id || auth()->user()->role !== 'vendor') {
+            abort(403);
+        }
+
+        $request->validate([
+            'category_id' => 'required|exists:categories,id',
+            'name' => 'required|unique:products,name,' . $product->id,
+            'description' => 'required',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
+        $imgName = $product->image;
+        if ($request->hasFile('image')) {
+            $imgName = time() . '_' . Str::random(5) . '.' . $request->image->extension();
+            $request->image->move(public_path('uploads/products'), $imgName);
+        }
+
+        $product->update([
+            'category_id' => $request->category_id,
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'image' => $imgName,
+        ]);
+
+        return redirect()->route('vendor.products.index')->with('success', 'Product updated successfully');
     }
 
     /**
@@ -98,6 +133,12 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        if (auth()->id() !== $product->vendor_id || auth()->user()->role !== 'vendor') {
+            abort(403);
+        }
+
+        $product->delete();
+
+        return redirect()->route('vendor.products.index')->with('success', 'Product deleted successfully');
     }
 }

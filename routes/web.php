@@ -55,11 +55,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/vendor/profile', [VendorController::class, 'storeProfile'])->name('vendor.profile.store');
 
         Route::resource('vendor/products', ProductController::class)
-            ->only(['index', 'create', 'store'])
+            ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
             ->names([
                 'index' => 'vendor.products.index',
                 'create' => 'vendor.products.create',
                 'store' => 'vendor.products.store',
+                'edit' => 'vendor.products.edit',
+                'update' => 'vendor.products.update',
+                'destroy' => 'vendor.products.destroy',
             ]);
     });
 });
