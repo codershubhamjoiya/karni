@@ -1,9 +1,11 @@
 @include('layouts.header')
 <h1>All Products</h1>
 
-<a href="{{ route('product.create') }}">
+@if(auth()->check() && auth()->user()->role === 'vendor')
+<a href="{{ route('vendor.products.create') }}">
     Add Product
 </a>
+@endif
 
 <table border="1">
    <tr>

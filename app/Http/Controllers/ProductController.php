@@ -6,23 +6,23 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Inertia\Inertia;
 
 class ProductController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $products = Product::with('category')->get();
+        if (request()->routeIs('vendor.products.*') && auth()->check() && auth()->user()->role === 'vendor') {
+            $products = Product::with('category')
+                ->where('vendor_id', auth()->id())
+                ->get();
+        } else {
+            $products = Product::with('category')->get();
+        }
 
-        return Inertia::render('Product/Index', compact('products'));
+        return view('product.index', compact('products'));
     }
 
     /**
@@ -32,13 +32,13 @@ class ProductController extends Controller
     {
         $categories = Category::where('status', true)->get();
 
-        return Inertia::render('Product/Create', compact('categories'));
+        return view('product.create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-   public function store(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
           'category_id' => 'required|exists:categories,id',
@@ -64,7 +64,9 @@ class ProductController extends Controller
             'status' => true,
         ]);
 
-        return redirect()->route('vendor.products.create')->with('success', 'Product added successfully');
+        $redirectRoute = request()->routeIs('vendor.products.*') ? 'vendor.products.create' : 'product.create';
+
+        return redirect()->route($redirectRoute)->with('success', 'Product added successfully');
     }
 
     /**

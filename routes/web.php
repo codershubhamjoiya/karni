@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('role:customer,vendor,admin')->group(function () {
         Route::resource('category', CategoryController::class);
-        Route::resource('product', ProductController::class);
+        Route::resource('product', ProductController::class)->only(['index']);
 
         Route::get('/vendor/products/view', function () {
             $products = \App\Models\Product::with('category')
